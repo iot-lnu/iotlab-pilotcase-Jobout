@@ -65,7 +65,7 @@ Once the device is triggered to wake up, it increases a counter and sends a LoRa
 
 
 # Power profiling
-The power consumption of this prototype is done using an Otii Arc. 
+The power profiling of this prototype is done using an Otii Arc. 
 
 The image below shows the power consumption of the device for joining the network. The join sequence and TX-frame took `~12.2` seconds to execute and consumed around `748uWh`. A future improvement of this could be joining only once, by saving the LoRaWAN session keys in the device's `nvram` and remaining joined after waking up from deep sleep.
 
