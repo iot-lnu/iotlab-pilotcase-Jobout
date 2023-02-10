@@ -41,10 +41,9 @@ RTC_DATA_ATTR int bootCount = 4;
 uint32_t license[4] = {0xD5397DF0, 0x8573F814, 0x7A38C73D, 0x48E68607};
 
 /* OTAA para*/
-uint8_t DevEui[] = {0x70, 0xB3, 0xD5, 0x49, 0x9D, 0x7D, 0x4F, 0xB0};
-uint8_t AppEui[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x23};
-uint8_t AppKey[] = {0x3B, 0x21, 0xE7, 0xDB, 0xC0, 0xE3, 0x9F, 0x0D, 0xA1, 0xA6, 0x5B, 0x3D, 0x58, 0xE6, 0xDE, 0xF3};
-
+uint8_t DevEui[] = { 0x70,0xB3,0xD5,0x7E,0xD0,0x05,0xA4,0x24 };
+uint8_t AppEui[] = { 0x00,0x00,0x00,0x00,0x00,0x00,0x01,0x01 };
+uint8_t AppKey[] = { 0xB6,0xD0,0x65,0xCF,0x18,0x00,0x01,0x7D,0x25,0xDB,0x53,0x11,0x18,0xB3,0xC2,0x02 };
 /* ABP para*/
 uint8_t NwkSKey[] = {0x15, 0xb1, 0xd0, 0xef, 0xa4, 0x63, 0xdf, 0xbe, 0x3d, 0x11, 0x18, 0x1e, 0x1e, 0xc7, 0xda, 0x85};
 uint8_t AppSKey[] = {0xd7, 0x2c, 0x78, 0x75, 0x8c, 0xdc, 0xca, 0xbf, 0x55, 0xee, 0x4a, 0x77, 0x8d, 0x16, 0xef, 0x67};
@@ -229,40 +228,40 @@ void loop()
 {
   switch (deviceState)
   {
-    case DEVICE_STATE_INIT:
-    {
-      LoRaWAN.init(loraWanClass, loraWanRegion);
-      break;
-    }
-    case DEVICE_STATE_JOIN:
-    {
-      LoRaWAN.join();
-      break;
-    }
-    case DEVICE_STATE_SEND:
-    {
-      // prepareTxFrame(appPort);
-      LoRaWAN.send(loraWanClass);
-      deviceState = DEVICE_STATE_CYCLE;
-      break;
-    }
-    case DEVICE_STATE_CYCLE:
-    {
-      // Schedule next packet transmission
-      txDutyCycleTime = appTxDutyCycle + randr(-APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND);
-      LoRaWAN.cycle(txDutyCycleTime);
-      deviceState = DEVICE_STATE_SLEEP;
-      break;
-    }
-    case DEVICE_STATE_SLEEP:
-    {
-      LoRaWAN.sleep(loraWanClass, debugLevel);
-      break;
-    }
-    default:
-    {
-      deviceState = DEVICE_STATE_INIT;
-      break;
-    }
+  case DEVICE_STATE_INIT:
+  {
+    LoRaWAN.init(loraWanClass, loraWanRegion);
+    break;
+  }
+  case DEVICE_STATE_JOIN:
+  {
+    LoRaWAN.join();
+    break;
+  }
+  case DEVICE_STATE_SEND:
+  {
+    // prepareTxFrame(appPort);
+    LoRaWAN.send(loraWanClass);
+    deviceState = DEVICE_STATE_CYCLE;
+    break;
+  }
+  case DEVICE_STATE_CYCLE:
+  {
+    // Schedule next packet transmission
+    txDutyCycleTime = appTxDutyCycle + randr(-APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND);
+    LoRaWAN.cycle(txDutyCycleTime);
+    deviceState = DEVICE_STATE_SLEEP;
+    break;
+  }
+  case DEVICE_STATE_SLEEP:
+  {
+    LoRaWAN.sleep(loraWanClass, debugLevel);
+    break;
+  }
+  default:
+  {
+    deviceState = DEVICE_STATE_INIT;
+    break;
+  }
   }
 }
